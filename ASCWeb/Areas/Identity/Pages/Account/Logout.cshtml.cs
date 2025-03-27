@@ -10,11 +10,11 @@ namespace ASCWeb.Areas.Identity.Pages.Account
     [AllowAnonymous]
     public class LogoutModel : PageModel
     {
-        private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly SignInManager<IdentityUser> _signInManager;
         private readonly ILogger<LogoutModel> _logger;
 
         // Constructor đã cập nhật để khởi tạo đúng
-        public LogoutModel(SignInManager<ApplicationUser> signInManager, ILogger<LogoutModel> logger)
+        public LogoutModel(SignInManager<IdentityUser> signInManager, ILogger<LogoutModel> logger)
         {
             _signInManager = signInManager ?? throw new ArgumentNullException(nameof(signInManager));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
