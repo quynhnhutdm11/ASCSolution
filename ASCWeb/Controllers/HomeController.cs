@@ -3,22 +3,35 @@ using ASCWeb.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using System.Diagnostics;
+using ASC.Utilities;
+using ASCWeb.Controllers;
 
 namespace ASC.Web.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : AnonymousController
     {
         private readonly ILogger<HomeController> _logger;
         private IOptions<ApplicationSettings> _settings;
-        public HomeController(ILogger<HomeController> logger, IOptions<ApplicationSettings> settings)
+        public HomeController(IOptions<ApplicationSettings> settings)
         {
-            _logger = logger;
+            //_logger = logger;
             _settings = settings;
         }
-
         public IActionResult Index()
         {
+            /// Set Session  
+            HttpContext.Session.SetSession("Test", _settings.Value);
+
+            /// Get Session  
+            var settings = HttpContext.Session.GetSession<ApplicationSettings>("Test");
+
+            /// Usage of IOptions  
             ViewBag.Title = _settings.Value.ApplicationTitle;
+
+            // Test fail test case  
+             //ViewData.Model = "Test";  
+             //throw new Exception("Login Fail!!!!");  
+
             return View();
         }
 
@@ -31,10 +44,6 @@ namespace ASC.Web.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
-        public IActionResult Dashboard()
-        {
-            return View();
         }
     }
 }
