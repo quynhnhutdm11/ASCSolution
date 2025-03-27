@@ -45,12 +45,13 @@ namespace ASC.DataAccess
 
             var type = typeof(T).Name;
 
-            if (!_repositories.ContainsKey(type))
+            if (_repositories.ContainsKey(type))
             {
-                var repositoryType = typeof(Repository<>);
-                var repositoryInstance = Activator.CreateInstance(repositoryType.MakeGenericType(typeof(T)), _dbContext);
-                _repositories.Add(type, repositoryInstance);
+                return (IRepository<T>)_repositories[type];
             }
+            var repositoryType = typeof(Repository<>);
+            var repositoryInstance = Activator.CreateInstance(repositoryType.MakeGenericType(typeof(T)), _dbContext);
+            _repositories.Add(type, repositoryInstance);
             return (IRepository<T>)_repositories[type];
         }
     }
